@@ -2,16 +2,18 @@
 #include "pch.h"
 #include <stdio.h>
 
+//#define DEBUG
+
 #ifdef DEBUG
-#define dprintf(fmt, ...) printf(fmt, __VA_ARGS__)
+#define dprintf(arg) printf arg
 #else
-#define dprintf(fmt, ...)
+#define dprintf(arg)
 #endif
 
 #ifdef DEBUG
-#define dfprintf(file, fmt, ...) fprintf(file, fmt, __VA_ARGS__)
+#define dfprintf(arg) fprintf arg
 #else
-#define dfprintf(file, fmt, ...)
+#define dfprintf(arg)
 #endif
 
 #ifdef DEBUG
@@ -68,22 +70,22 @@ BOOL CALLBACK enumProc(HWND hWnd, LPARAM lParam) {
 
 DWORD WINAPI mouseHandler(LPVOID param) {
 	DWORD wndTid = 0;
-	dprintf("mouse handler up\n");
+	dprintf(("mouse handler up\n"));
 	while (!wndTid) {
 		EnumWindows(enumProc, &wndTid);
 	}
-	dprintf("wndTid: %d\n", wndTid);
+	dprintf(("wndTid: %d\n", wndTid));
 	hHook = SetWindowsHookExA(WH_CALLWNDPROC, hookProc, hooklib, wndTid);
-	dprintf("hHook: %p\n", hHook);
+	dprintf(("hHook: %p\n", hHook));
 	if (!hHook) {
 		char* messageBuffer;
 		size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 			NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
-		dprintf("hook failed with error: %s\n", messageBuffer);
-		dfprintf(logFile, "hook failed with error: %s\n", messageBuffer);
+		dprintf(("hook failed with error: %s\n", messageBuffer));
+		dfprintf((logFile, "hook failed with error: %s\n", messageBuffer));
 		dfclose(logFile);
 		LocalFree(messageBuffer);
-		TerminateProcess(GetCurrentProcessId(), 5);
+		TerminateProcess(GetCurrentProcess(), 5);
 	}
 
 	HANDLE hThread = OpenThread(SYNCHRONIZE, FALSE, wndTid);
@@ -91,11 +93,11 @@ DWORD WINAPI mouseHandler(LPVOID param) {
 		char* messageBuffer;
 		size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 			NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
-		dprintf("openthread failed with error: %s\n", messageBuffer);
-		dfprintf(logFile, "openthreadfailed with error: %s\n", messageBuffer);
+		dprintf(("openthread failed with error: %s\n", messageBuffer));
+		dfprintf((logFile, "openthreadfailed with error: %s\n", messageBuffer));
 		dfclose(logFile);
 		LocalFree(messageBuffer);
-		TerminateProcess(GetCurrentProcessId(), 6);
+		TerminateProcess(GetCurrentProcess(), 6);
 	}
 
 	WaitForSingleObject(hThread, INFINITE);

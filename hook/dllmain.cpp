@@ -1,6 +1,7 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 #include <stdio.h>
+//#define DEBUG
 
 #ifdef DEBUG
 #define dprintf(fmt, ...) printf(fmt, __VA_ARGS__)
@@ -23,6 +24,10 @@
 LRESULT CALLBACK hookProc(int code, WPARAM wParam, LPARAM lParam) {
 	CWPSTRUCT* message = (CWPSTRUCT*)lParam;
 	dprintf("thing (%d %u %ld %u)\n", code, wParam, lParam, message->message);
+	if (memcmp("VT", (void*)0x004DCBE4, 2) == 0) {
+		goto end;
+	}
+
 
 	if (code < 0) {
 		return CallNextHookEx(NULL, code, wParam, lParam);
@@ -52,7 +57,7 @@ LRESULT CALLBACK hookProc(int code, WPARAM wParam, LPARAM lParam) {
 			SendInput(2, inputs, sizeof(INPUT));
 		}
 	}
-
+end:
 	return CallNextHookEx(NULL, code, wParam, lParam);
 }
 
