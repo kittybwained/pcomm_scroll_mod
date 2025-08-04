@@ -1,0 +1,5 @@
+LIBRARY PSAPI
+EXPORTS
+	EnumProcessModules=hEnumProcessModules
+	GetModuleBaseNameA=hGetModuleBaseNameA
+	EnumProcesses=hEnumProcesses
