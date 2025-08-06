@@ -1,6 +1,6 @@
-# PCOMM Scroll wheel support mod
+# PCOMM Scroll wheel and double click support mod
 
-Adds support for using the scroll wheel as PF8/PF7 to IBM Personal Communications.
+Adds support for using the scroll wheel as PF8/PF7 to IBM Personal Communications. Optionally also adds support for using double click as ENTER. This is already in PCOMM 12 through the Hotspots configuration, but it's implemented badly and slows down normal clicks considerably. This mod doesn't.
 
 This project was developed for PCOMM Version 12 (32-bit). It will likely not work on other versions, but shouldn't be too difficult to adapt.
 
