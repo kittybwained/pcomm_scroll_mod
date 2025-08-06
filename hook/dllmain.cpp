@@ -4,15 +4,15 @@
 //#define DEBUG
 
 #ifdef DEBUG
-#define dprintf(fmt, ...) printf(fmt, __VA_ARGS__)
+#define dprintf(arg) printf arg
 #else
-#define dprintf(fmt, ...)
+#define dprintf(arg)
 #endif
 
 #ifdef DEBUG
-#define dfprintf(file, fmt, ...) fprintf(file, fmt, __VA_ARGS__)
+#define dfprintf(arg) fprintf arg
 #else
-#define dfprintf(file, fmt, ...)
+#define dfprintf(arg)
 #endif
 
 #ifdef DEBUG
